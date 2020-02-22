@@ -12,21 +12,21 @@ namespace RefTagger.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImageReferenceTagsController : ControllerBase
+    public class ImageTagsController : ControllerBase
     {
         private readonly DbContextOptions<RefTaggerContext> dbContextOptions;
 
-        public ImageReferenceTagsController(DbContextOptions<RefTaggerContext> dbContextOptions)
+        public ImageTagsController(DbContextOptions<RefTaggerContext> dbContextOptions)
         {
             this.dbContextOptions = dbContextOptions;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ImageReferenceTag>> Get(int pageSize = 100, int pageIndex = 1)
+        public ActionResult<IEnumerable<ImageTag>> Get(int pageSize = 100, int pageIndex = 1)
         {
             using var context = new RefTaggerContext(dbContextOptions);
 
-            return context.ImageReferenceTags
+            return context.ImageTags
                           .Skip((pageIndex - 1) * pageSize)
                           .Take(pageSize)
                           .ToList();
@@ -34,45 +34,45 @@ namespace RefTagger.Controllers
 
         [HttpGet]
         [Route("{fileName}")]
-        public ActionResult<IEnumerable<ImageReferenceTag>> Get(string fileName, int pageSize = 100, int pageIndex = 1)
+        public ActionResult<IEnumerable<ImageTag>> Get(string fileName, int pageSize = 100, int pageIndex = 1)
         {
             using var context = new RefTaggerContext(dbContextOptions);
 
-            return context.ImageReferenceTags
-                          .Where(x => x.ImageReference.FileName == fileName)
+            return context.ImageTags
+                          .Where(x => x.ImageFileName == fileName)
                           .Skip((pageIndex - 1) * pageSize)
                           .Take(pageSize)
                           .ToList();
         }
 
         [HttpPost]
-        public ActionResult<ImageReferenceTag> Post(ImageReferenceTag imageReferenceTag)
+        public ActionResult<ImageTag> Post(ImageTag imageReferenceTag)
         {
             using var context = new RefTaggerContext(dbContextOptions);
 
-            context.ImageReferenceTags.Add(imageReferenceTag);
+            context.ImageTags.Add(imageReferenceTag);
 
             return imageReferenceTag;
         }
 
         [Route("id")]
         [HttpPut]
-        public ActionResult<ImageReferenceTag> Put(int id, ImageReferenceTag imageReferenceTag)
+        public ActionResult<ImageTag> Put(int id, ImageTag imageReferenceTag)
         {
             using var context = new RefTaggerContext(dbContextOptions);
 
-            context.ImageReferenceTags.Update(imageReferenceTag);
+            context.ImageTags.Update(imageReferenceTag);
 
             return imageReferenceTag;
         }
 
         [Route("id")]
         [HttpDelete]
-        public ActionResult<bool> Delete(ImageReferenceTag imageReferenceTag)
+        public ActionResult<bool> Delete(ImageTag imageReferenceTag)
         {
             using var context = new RefTaggerContext(dbContextOptions);
 
-            context.ImageReferenceTags.Remove(imageReferenceTag);
+            context.ImageTags.Remove(imageReferenceTag);
 
             return true;
         }

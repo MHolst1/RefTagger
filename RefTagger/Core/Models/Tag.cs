@@ -9,7 +9,7 @@ namespace RefTagger.Core.Models
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public IEnumerable<ImageReference> ImageReferencesWithTag { get; set; }
-        public ICollection<ImageReferenceTag> ImageReferenceTags { get; set; }
+        public IEnumerable<string> FileNamesWithTag => ImageTags?.Select(x => x.ImageFileName);
+        public ICollection<ImageTag> ImageTags { get; set; }
     }
 }
